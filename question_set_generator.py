@@ -1,58 +1,57 @@
-# Generates a list of Question objects
-# Op param selects which operation
-# top_num is what the highest number in the set will be:
-# top_num 10, last question will be 10 + 10, top_num 5, last question will be 5 + 5
-# list_name is the name of the returned list of questions
+# Imports the random module to generate random numbers
+import random
 
+# Function to generate a set of questions based on the operation type, max integer value, and number of questions
+def question_set_generator(op, max_int, num_questions):
 
-def question_set_generator(op, top_num):
-
-    # Defines a question class that saves the question string, answer, and status
+    # Defines a Question class to hold the question string, correct answer, 
+    # number of attempts made by the user, and whether the question has been answered correctly
     class Question():
-        def __init__(self, string, answer, status):
-            self.string = string
-            self.answer = answer
-            self.status = status
-
+        def __init__(self, string, answer):
+            self.string = string          # The string representation of the question (e.g., "2 + 3")
+            self.answer = answer          # The correct answer to the question (e.g., 5)
+            self.attempts = 0             # Initialize the number of attempts to 0
+            self.correct = False          # Initialize the correct flag to False (question not yet answered correctly)
+        
+        # String representation of the Question object, useful for debugging or displaying the question details
         def __str__(self):
-            return f"Question: {self.string}, Answer: {self.answer}, Status: {self.status}"
+            return f"Question: {self.string}, Answer: {self.answer}, Attempts: {self.attempts}"
 
-           
-
-    # Some empty placeholder lists
+    # Initialize some empty placeholder lists (not used in the final code)
     question_names = []
     question_strings = []
     question_answers = []
-    question_list = []
+    question_list = []  # List to hold the generated Question objects
 
-    # If op == "add", run some stuff
+    # Use a match statement to determine the operation type
+    # In this case, we are only handling addition ("add")
     match op:
         case "add":
+            
+            # Initialize a list to track generated question strings to avoid duplicates
+            q_str_list = []
+            i = 0  # Initialize a counter for the number of questions generated
 
-            # Adds a question name (a1_1), string (1 + 1), and answer (2) to
-            # separate lists
-            for num1 in range(1, top_num + 1):
-                num2 = 0
-                for j in range(top_num):
-                    num2 += 1
-                    question_names.append(f"a{num1}_{num2}")
-                    question_strings.append(f"{num1} + {num2}")
-                    question_answers.append(f"{num1 + num2}")
+            # Loop until the desired number of questions is generated
+            while i < num_questions:
+                # Generate two random integers between 1 and the maximum integer value
+                num_1 = random.randint(1, max_int)
+                num_2 = random.randint(1, max_int)
 
-            # For each item in the list, create a object
-            for i in range(len(question_names)):
-                question_names[i] = Question(question_strings[i], question_answers[i], "unanswered")
-                question_list.append(question_names[i])
+                # Create a string representing the question (e.g., "2 + 3")
+                q_str = f"{num_1} + {num_2}"
 
+                # Check if the question string has not been generated before
+                if q_str not in q_str_list:
+                    # Add the question string to the list of generated strings
+                    q_str_list.append(q_str)
+                    # Create a Question object with the string and the correct answer, then add it to the question list
+                    question_list.append(Question(q_str, (num_1 + num_2)))
+                    # Increment the counter since a unique question was generated
+                    i += 1
+                else:
+                    # If the question string is a duplicate, continue to the next iteration without incrementing the counter
+                    continue
+
+    # Return the list of generated Question objects
     return question_list
-
-
-
-
-
- 
-
-
-
-
-                    
