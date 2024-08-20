@@ -2,21 +2,25 @@
 # op param selects which operation to use (e.g., "add" for addition)
 # max_int determines the highest integer value used in the questions
 # num_questions specifies how many questions to generate
+
 import random
 
-def question_set_generator(op, max_int, num_questions):
+
+def QuestionSetGenerator(op, max_int, num_questions):
+    # ---------- Define Question Class ----------
     # Defines a class to represent a question with its details
     class Question():
         def __init__(self, string, answer):
             self.string = string    # The question as a string (e.g., "5 + 3")
             self.answer = answer    # The correct answer to the question
             self.attempts = 0       # Tracks how many times the user has attempted this question
-            self.correct = False    # Flag to check if the question has been answered correctly
 
         def __str__(self):
             # Return a string representation of the Question object
             return f"Question: {self.string}, Answer: {self.answer}, Attempts: {self.attempts}"
 
+
+    # ---------- Generate Questions ----------
     # List to store all generated Question objects
     question_list = []
 
@@ -37,11 +41,12 @@ def question_set_generator(op, max_int, num_questions):
                     # Add the question string to the list of used questions
                     q_str_list.append(q_str)
                     # Create a Question object and add it to the question_list
-                    question_list.append(Question(q_str, num_1 + num_2))
+                    question_list.append(Question(q_str, str(num_1 + num_2)))
                     i += 1  # Increment the counter to keep track of the number of questions created
                 else:
                     # If the question string is a duplicate, continue to the next iteration
                     continue
 
+    # ---------- Return List of Questions ----------
     # Return the list of generated Question objects
     return question_list
